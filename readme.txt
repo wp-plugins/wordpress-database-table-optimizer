@@ -40,4 +40,5 @@ This plugin uses Aidan Lister size_readable PHP function to show the file sizes 
 http://aidanlister.com/repos/v/function.size_readable.php
 
 Special thanks to David Potter (http://dpotter.net/Technical/) for catching my oversight.
-http://www.figmentthinking.com/wordpress-database-table-optimizer/#comment-75
+
+http://www.figmentthinking.com/wordpress-database-table-optimizer/#comment-74
