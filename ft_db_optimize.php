@@ -3,7 +3,7 @@
 Plugin Name: WordPress Database Table Optimizer - Figment Thinking 
 Plugin URI: http://www.figmentthinking.com/wordpress-database-table-optimizer/
 Description: The WordPress Database Table Optimizer plugin will automatically make sure that your WordPress MySQL database tables are always optimized.  Activate the plugin and it will do the rest.
-Version: 1.1
+Version: 1.1.1
 Author: Marion Dorsett
 Author URI: http://www.FigmentThinking.com/
 */

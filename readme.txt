@@ -4,7 +4,7 @@ Donate link: http://www.figmentthinking.com/wordpress-database-table-optimizer/
 Tags: database, optimize
 Requires at least: 2.6.2
 Tested up to: 2.6.2
-Stable tag: 1.1
+Stable tag: 1.1.1
 
 The WordPress Database Table Optimizer plugin will automatically make sure that your WordPress MySQL database tables are always optimized.
 
