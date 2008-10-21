@@ -3,7 +3,7 @@
 Plugin Name: WordPress Database Table Optimizer - Figment Thinking 
 Plugin URI: http://www.figmentthinking.com/wordpress-database-table-optimizer/
 Description: The WordPress Database Table Optimizer plugin will automatically make sure that your WordPress MySQL database tables are always optimized.  Activate the plugin and it will do the rest.
-Version: 1.0
+Version: 1.1
 Author: Marion Dorsett
 Author URI: http://www.FigmentThinking.com/
 */
@@ -12,8 +12,8 @@ function figment_thinking_mysql_optimize()
 {
 	global $wpdb;
 	
-	# Assign MySQL Tables to new array so we can manipulate them for this plugin.
-	$_array = $wpdb->tables;
+	# Get MySQL Tables
+	$_array = figment_thinking_get_mysql_tables();
 	
 	# Were going to generate a string to list all fo the MySQL tables
 	$mysql_tables = '';
@@ -22,7 +22,7 @@ function figment_thinking_mysql_optimize()
 	if(!is_array($_array)) { $_array = array($_array); } // end if
 	
 	# Loop through the array and create the string we need.  Be sure to ad the dynamic prefix to the table names
-	if(is_array($_array))  { foreach($_array as $mysql_table) { $mysql_tables .= "`" . $wpdb->prefix . $mysql_table . "`,"; } /* end foreach */ } // end if
+	if(is_array($_array))  { foreach($_array as $mysql_table) { $mysql_tables .= "`" . $mysql_table . "`,"; } /* end foreach */ } // end if
 	
 	# We don't need the trailing comma so we can remove it.
 	$mysql_tables = rtrim($mysql_tables, ',');
@@ -39,6 +39,30 @@ add_action('init', 'figment_thinking_mysql_optimize');
 
 # Define Admin page for plugin
 add_action('admin_menu', 'figment_thinking_mysql_optimize_pages');
+
+function figment_thinking_get_mysql_tables()
+{
+	global $wpdb;
+	$_array = false;
+	
+	# Assign MySQL Tables to new array so we can manipulate them for this plugin.
+	$_temp = $wpdb->get_results("SHOW TABLES LIKE 'wp_%'", ARRAY_A);
+
+	if(is_array($_temp))
+	{
+		foreach($_temp as $_result)
+		{
+			if(!is_array($_result)) { continue; } // end if
+			foreach($_result as $mysql_table)
+			{
+				$_array[substr($mysql_table, strlen($wpdb->prefix))] = $mysql_table; 
+			} // end foreach
+		} // end foreach
+	} // end if
+	
+	return $_array;
+} // end figment_thinking_get_mysql_tables
+
 function figment_thinking_mysql_optimize_pages() 
 {
     # Add a new submenu under Manage:
@@ -99,16 +123,22 @@ function figment_thinking_mysql_optimize_manage_page()
 	$overhead = 0;
 ?>
 <div class="wrap"> 
-    <h2>Database Table Optimizer</h2>
+    <h2>Wordpress Database Table Optimizer</h2>
+	<ul>
+		<li><a href="http://www.figmentthinking.com/wordpress-database-table-optimizer/" target="_blank">Visit &lsquo;Wordpress Database Table Optimizer&rsquo; home page on FigmentThinking.com &raquo;</a></li>
+		<li><a href="http://wordpress.org/extend/plugins/wordpress-database-table-optimizer/" target="_blank">Visit &lsquo;Wordpress Database Table Optimizer&rsquo; information page on Wordpress.org &raquo;</a></li>
+	</ul>
 <?php
-	if(is_array($wpdb->tables))
+	# Get MySQL Tables
+	$_array = figment_thinking_get_mysql_tables();
+	if(is_array($_array))
 	{
-		foreach($wpdb->tables as $ft_table_name)
+		foreach($_array as $key => $ft_table_name)
 		{
-			$_temp = $wpdb->get_row("SHOW TABLE STATUS WHERE `Name` LIKE '" . mysql_real_escape_string($wpdb->prefix . $ft_table_name) . "'");
+			$_temp = $wpdb->get_row("SHOW TABLE STATUS WHERE `Name` LIKE '" . mysql_real_escape_string($ft_table_name) . "'");
 			$overhead = $overhead + (int)$_temp->Data_free;
 			
-			$_data[$ft_table_name] = $_temp;
+			$_data[$key] = $_temp;
 		} // end foreach
 		
 		asort($_data);
@@ -142,7 +172,6 @@ function figment_thinking_mysql_optimize_manage_page()
 		{
 			foreach($_data as $ft_table_name => $_temp)
 			{
-				// $_temp = $wpdb->get_row("SHOW TABLE STATUS WHERE `Name` LIKE '" . mysql_real_escape_string($wpdb->prefix . $ft_table_name) . "'");
 ?>
 		<tr>
 			<td><?php echo $ft_table_name; ?></td>

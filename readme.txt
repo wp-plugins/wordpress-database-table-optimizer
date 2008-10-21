@@ -4,7 +4,7 @@ Donate link: http://www.figmentthinking.com/wordpress-database-table-optimizer/
 Tags: database, optimize
 Requires at least: 2.6.2
 Tested up to: 2.6.2
-Stable tag: 1.0
+Stable tag: 1.1
 
 The WordPress Database Table Optimizer plugin will automatically make sure that your WordPress MySQL database tables are always optimized.
 
@@ -35,6 +35,9 @@ You can leave your feedback at (http://www.figmentthinking.com/wordpress-databas
 
 == Arbitrary section ==
 
-This function uses Aidan Lister size_readable PHP function to show the file sizes of the MySQL tables.  I've changed the name of the function to avoid naming conflicts with other plugins that may be using this function as well.
+This plugin uses Aidan Lister size_readable PHP function to show the file sizes of the MySQL tables.  I've changed the name of the function to avoid naming conflicts with other plugins that may be using this function as well.
 
 http://aidanlister.com/repos/v/function.size_readable.php
+
+Special thanks to David Potter (http://dpotter.net/Technical/) for catching my oversight.
+http://www.figmentthinking.com/wordpress-database-table-optimizer/#comment-75
