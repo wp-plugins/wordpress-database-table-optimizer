@@ -46,7 +46,7 @@ function figment_thinking_get_mysql_tables()
 	$_array = false;
 	
 	# Assign MySQL Tables to new array so we can manipulate them for this plugin.
-	$_temp = $wpdb->get_results("SHOW TABLES LIKE 'wp_%'", ARRAY_A);
+	$_temp = $wpdb->get_results("SHOW TABLES LIKE '" . $wpdb->prefix . "%'", ARRAY_A);
 
 	if(is_array($_temp))
 	{
